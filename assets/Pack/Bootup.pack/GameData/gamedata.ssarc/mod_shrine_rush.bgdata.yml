@@ -1,0 +1,4 @@
+bool_data:
+- {DataName: ShrineRush_Playing, DeleteRev: -1, HashValue: 478692026,
+  InitValue: 0, IsEventAssociated: true, IsOneTrigger: false, IsProgramReadable: true,
+  IsProgramWritable: true, IsSave: false, MaxValue: true, MinValue: false, ResetType: 0}
