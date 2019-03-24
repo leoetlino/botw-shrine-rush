@@ -96,63 +96,70 @@ class ShrineRushBuilder(Builder):
             CheckCurrentMap = EventSystemActor.find_query('CheckCurrentMap')
             FlagOFF = EventSystemActor.find_action('Demo_FlagOFF')
 
-            # generate events
-            # CheckCurrentMap (current shrine)
-            #   -> 1: Warp to next shrine
-            #   -> 0: CheckCurrentMap (next shrine) etc.
-            first_event = None
-            previous_switch_evt = None
-            for i in range(len(shrines)):
-                shrine = shrines[i]
-                is_last = i == len(shrines) - 1
+            def generate_chain(entry_name: str, shrines: typing.List[Shrine]):
+                # generate events
+                # CheckCurrentMap (current shrine)
+                #   -> 1: Warp to next shrine
+                #   -> 0: CheckCurrentMap (next shrine) etc.
+                assert flowchart
+                first_event = None
+                previous_switch_evt = None
+                for i in range(len(shrines)):
+                    shrine = shrines[i]
+                    is_last = i == len(shrines) - 1
 
-                next_evt = evfl.Event()
-                if is_last:
-                    next_evt.data = evfl.SubFlowEvent()
-                    next_evt.data.entry_point_name = 'Exit'
-                else:
-                    # Clear the IsInside_Dungeon flag to ensure the dungeon entrance demo works correctly
-                    # (otherwise the entrance elevator actor gets signalled too early).
-                    next_evt.data = evfl.SubFlowEvent()
-                    next_evt.data.entry_point_name = 'Next_BeforeSceneChange'
-                    scene_evt = evfl.Event()
-                    flowchart.add_event(scene_evt, self._evfl_id_generator)
-                    next_evt.data.nxt = make_index(scene_evt)
-                    scene_evt.data = evfl.ActionEvent()
-                    scene_evt.data.actor = make_rindex(EventSystemActor)
-                    scene_evt.data.actor_action = make_rindex(ChangeScene)
-                    scene_evt.data.params = evfl.Container()
-                    scene_evt.data.params.data['IsWaitFinish'] = True
-                    scene_evt.data.params.data['WarpDestMapName'] = 'CDungeon/' + shrines[i+1].map_name
-                    scene_evt.data.params.data['WarpDestPosName'] = 'Entrance_1'
-                    scene_evt.data.params.data['FadeType'] = 2
-                    scene_evt.data.params.data['StartType'] = 0
-                    scene_evt.data.params.data['EvflName'] = 'Demo008_2'
-                    scene_evt.data.params.data['EntryPointName'] = 'Demo008_2'
+                    next_evt = evfl.Event()
+                    if is_last:
+                        next_evt.data = evfl.SubFlowEvent()
+                        next_evt.data.entry_point_name = 'Exit'
+                    else:
+                        # Clear the IsInside_Dungeon flag to ensure the dungeon entrance demo works correctly
+                        # (otherwise the entrance elevator actor gets signalled too early).
+                        next_evt.data = evfl.SubFlowEvent()
+                        next_evt.data.entry_point_name = 'Next_BeforeSceneChange'
+                        scene_evt = evfl.Event()
+                        flowchart.add_event(scene_evt, self._evfl_id_generator)
+                        next_evt.data.nxt = make_index(scene_evt)
+                        scene_evt.data = evfl.ActionEvent()
+                        scene_evt.data.actor = make_rindex(EventSystemActor)
+                        scene_evt.data.actor_action = make_rindex(ChangeScene)
+                        scene_evt.data.params = evfl.Container()
+                        scene_evt.data.params.data['IsWaitFinish'] = True
+                        scene_evt.data.params.data['WarpDestMapName'] = 'CDungeon/' + shrines[i+1].map_name
+                        scene_evt.data.params.data['WarpDestPosName'] = 'Entrance_1'
+                        scene_evt.data.params.data['FadeType'] = 2
+                        scene_evt.data.params.data['StartType'] = 0
+                        scene_evt.data.params.data['EvflName'] = 'Demo008_2'
+                        scene_evt.data.params.data['EntryPointName'] = 'Demo008_2'
 
-                e = evfl.Event()
-                e.data = evfl.SwitchEvent()
-                e.data.actor = make_rindex(EventSystemActor)
-                e.data.actor_query = make_rindex(CheckCurrentMap)
-                e.data.params = evfl.Container()
-                e.data.params.data['MapName'] = shrine.map_name
-                e.data.cases[1] = make_rindex(next_evt)
-                if is_last:
-                    e.data.cases[0] = make_rindex(next_evt)
-                flowchart.add_event(e, self._evfl_id_generator)
-                flowchart.add_event(next_evt, self._evfl_id_generator)
-                if previous_switch_evt:
-                    previous_switch_evt.data.cases[0] = make_index(e)
-                previous_switch_evt = e
+                    e = evfl.Event()
+                    e.data = evfl.SwitchEvent()
+                    e.data.actor = make_rindex(EventSystemActor)
+                    e.data.actor_query = make_rindex(CheckCurrentMap)
+                    e.data.params = evfl.Container()
+                    e.data.params.data['MapName'] = shrine.map_name
+                    e.data.cases[1] = make_rindex(next_evt)
+                    if is_last:
+                        e.data.cases[0] = make_rindex(next_evt)
+                    flowchart.add_event(e, self._evfl_id_generator)
+                    flowchart.add_event(next_evt, self._evfl_id_generator)
+                    if previous_switch_evt:
+                        previous_switch_evt.data.cases[0] = make_index(e)
+                    previous_switch_evt = e
 
-                if i == 0:
-                    first_event = e
+                    if i == 0:
+                        first_event = e
 
-            # add the entry point
-            entry_point = EntryPoint('Next')
-            assert first_event
-            entry_point.main_event = make_rindex(first_event)
-            flowchart.entry_points.append(entry_point)
+                # add the entry point
+                entry_point = EntryPoint(entry_name)
+                assert first_event
+                entry_point.main_event = make_rindex(first_event)
+                flowchart.entry_points.append(entry_point)
+
+            generate_chain('Next_All', shrines)
+            generate_chain('Next_WithoutBlessings', [s for s in shrines if not s.sub.endswith(' Blessing')])
+            generate_chain('Next_WithoutTestsOfStrength', [s for s in shrines if not s.sub.endswith(' Test of Strength')])
+            generate_chain('Next_WithoutBlessingsOrTestsOfStrength', [s for s in shrines if not s.sub.endswith(' Test of Strength') and not s.sub.endswith(' Blessing')])
 
     def _generate_gamedata_config(self) -> None:
         print('[ShrineRush] generating GameData configuration')

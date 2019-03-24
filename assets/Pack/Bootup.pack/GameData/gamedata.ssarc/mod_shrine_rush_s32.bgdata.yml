@@ -1,0 +1,8 @@
+s32_data:
+# 0: Don't skip anything
+# 1: Skip blessings
+# 2: Skip tests of strength
+# 3: Skip both
+- {DataName: ShrineRush_Mode, DeleteRev: -1, HashValue: -2143277063,
+  InitValue: 0, IsEventAssociated: true, IsOneTrigger: false, IsProgramReadable: true,
+  IsProgramWritable: true, IsSave: false, MaxValue: 10, MinValue: 0, ResetType: 0}

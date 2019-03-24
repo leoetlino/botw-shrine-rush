@@ -18,6 +18,18 @@ ShrineRush<Goal>:
 ShrineRush<Next>:
   is_timeline: false
   mode: Seamless
+ShrineRush<Next_All>:
+  is_timeline: false
+  mode: Seamless
+ShrineRush<Next_WithoutBlessings>:
+  is_timeline: false
+  mode: Seamless
+ShrineRush<Next_WithoutTestsOfStrength>:
+  is_timeline: false
+  mode: Seamless
+ShrineRush<Next_WithoutBlessingsOrTestsOfStrength>:
+  is_timeline: false
+  mode: Seamless
 ShrineRush<Next_BeforeSceneChange>:
   is_timeline: false
   mode: Seamless
