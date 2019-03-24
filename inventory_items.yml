@@ -31,6 +31,24 @@ food:
       - Item_Material_05
       - Item_Ore_H
     num: 8
+  # Hearty food
+  - ingredients:
+      - Item_FishGet_I
+      - Item_Material_06
+      - Item_Material_07
+    num: 5
+  - ingredients:
+      - Item_Fruit_D
+      - Item_Material_06
+      - Item_Material_01
+      - Item_Material_07
+    num: 3
+  - ingredients:
+      - Item_Fruit_D
+      - Item_Fruit_B
+      - Item_Material_01
+      - Item_Material_07
+    num: 2
 
 items:
   - {name: Obj_ArrowBundle_A_02, num: 10}
