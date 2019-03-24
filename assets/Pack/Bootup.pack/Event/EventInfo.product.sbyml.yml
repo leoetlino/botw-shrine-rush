@@ -3,6 +3,12 @@ ShrineRush<Enter>:
   mode: Seamless
   subfile:
   - {file: Common.bfevfl}
+ShrineRush<Enter_ResetFlag>:
+  is_timeline: false
+  mode: Seamless
+ShrineRush<Enter_EditInventory>:
+  is_timeline: false
+  mode: Seamless
 ShrineRush<Exit>:
   is_timeline: false
   mode: Seamless
@@ -13,9 +19,6 @@ ShrineRush<Next>:
   is_timeline: false
   mode: Seamless
 ShrineRush<Next_BeforeSceneChange>:
-  is_timeline: false
-  mode: Seamless
-ShrineRush<Enter_ResetFlag>:
   is_timeline: false
   mode: Seamless
 100enemy<Active_Talk>: {is_timeline: false, mode: Seamless}

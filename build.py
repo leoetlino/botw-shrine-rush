@@ -6,6 +6,7 @@ import os
 from pathlib import Path
 import signal
 import typing
+import yaml
 
 from builder import Builder, root
 import byml
@@ -28,6 +29,7 @@ class ShrineRushBuilder(Builder):
     def _build_project(self) -> None:
         self._generate_event_next()
         self._generate_event_enter_reset_flag()
+        self._generate_event_enter_edit_inventory()
         self._generate_gamedata_config()
 
     def generate_flags_to_reset(self) -> typing.List[FlagToReset]:
@@ -204,6 +206,45 @@ class ShrineRushBuilder(Builder):
                 events.append(evt)
 
             flowchart.botw_add_action_chain_and_entry('Enter_ResetFlag', events, self._evfl_id_generator)
+
+    def _generate_event_enter_edit_inventory(self) -> None:
+        print('[ShrineRush] generating ShrineRush<Enter_EditInventory>')
+        with self._get_main_event_flow() as event_flow:
+            flowchart = event_flow.flowchart
+            assert flowchart
+
+            EventSystemActor = flowchart.find_actor(evfl.ActorIdentifier('EventSystemActor'))
+            IncreasePorchItem = EventSystemActor.find_action('Demo_IncreasePorchItem')
+            SetCookItem = EventSystemActor.find_action('Demo_SetCookItem')
+
+            events: typing.List[evfl.Event] = []
+            with (root/'inventory_items.yml').open('r') as f:
+                inventory = yaml.load(f, Loader=yaml.CSafeLoader)
+            for item in inventory['food']:
+                evt = evfl.Event()
+                evt.data = evfl.ActionEvent()
+                evt.data.actor = make_rindex(EventSystemActor)
+                evt.data.actor_action = make_rindex(SetCookItem)
+                evt.data.params = evfl.Container()
+                evt.data.params.data['IsWaitFinish'] = True
+                evt.data.params.data['SetNum'] = item['num']
+                for i in range(5):
+                    evt.data.params.data['PorchItemName%02d' % (i+1)] = ''
+                for i, ingredient in enumerate(item['ingredients'][:5]):
+                    evt.data.params.data['PorchItemName%02d' % (i+1)] = ingredient
+                events.append(evt)
+            for item in inventory['items']:
+                evt = evfl.Event()
+                evt.data = evfl.ActionEvent()
+                evt.data.actor = make_rindex(EventSystemActor)
+                evt.data.actor_action = make_rindex(IncreasePorchItem)
+                evt.data.params = evfl.Container()
+                evt.data.params.data['IsWaitFinish'] = True
+                evt.data.params.data['Value'] = item['num']
+                evt.data.params.data['PorchItemName'] = item['name']
+                events.append(evt)
+
+            flowchart.botw_add_action_chain_and_entry('Enter_EditInventory', events, self._evfl_id_generator)
 
 def main() -> None:
     parser = argparse.ArgumentParser()

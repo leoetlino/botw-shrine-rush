@@ -1,0 +1,47 @@
+food:
+  # Speed up
+  - ingredients:
+      - Item_Fruit_E
+      - Item_Fruit_E
+      - Item_Fruit_E
+      - Item_Fruit_E
+      - Item_Enemy_56
+    num: 20
+  # Attack up
+  - ingredients:
+      - Item_FishGet_F
+      - Item_FishGet_F
+      - Item_FishGet_F
+      - Item_Material_03
+      - Item_Enemy_47
+    num: 20
+  # Shock resistance
+  - ingredients:
+      - Item_FishGet_D
+      - Item_FishGet_D
+      - Item_FishGet_D
+      - Item_FishGet_D
+      - Item_Meat_02
+    num: 2
+  # Extra stamina
+  - ingredients:
+      - Item_PlantGet_Q
+      - Item_PlantGet_Q
+      - Item_PlantGet_Q
+      - Item_Material_05
+      - Item_Ore_H
+    num: 8
+
+items:
+  - {name: Obj_ArrowBundle_A_02, num: 10}
+  - {name: Obj_BombArrow_A_03, num: 10}
+  - {name: Obj_ElectricArrow_A_02, num: 10}
+  - {name: Obj_FireArrow_A_02, num: 10}
+  - {name: Obj_IceArrow_A_02, num: 10}
+  # Fairy
+  - {name: Animal_Insect_F, num: 1}
+  # Octo Balloons
+  - {name: Item_Enemy_57, num: 20}
+  # Weapons (Ancient Shield and Falcon Bow)
+  - {name: Weapon_Shield_038, num: 1}
+  - {name: Weapon_Bow_017, num: 1}
