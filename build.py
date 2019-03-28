@@ -41,6 +41,7 @@ class ShrineRushBuilder(Builder):
         l.append(FlagToReset(name='IsGet_Obj_RemoteBombLv2', val=True))
         l.append(FlagToReset(name='IsGet_Obj_StopTimer', val=False))
         l.append(FlagToReset(name='IsGet_Obj_StopTimerLv2', val=True))
+        l.append(FlagToReset(name='Npc_DungeonPriest_First', val=True))
         l.append(FlagToReset(name='CurrentHart', val=52))
         l.append(FlagToReset(name='MaxHartValue', val=52))
         l.append(FlagToReset(name='StaminaCurrentMax', val=3000.0))
