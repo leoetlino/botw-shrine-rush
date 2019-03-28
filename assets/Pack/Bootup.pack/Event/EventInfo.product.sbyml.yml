@@ -26956,6 +26956,8 @@ Demo604_0<Demo604_0>:
   special_actor_name: none
   subfile:
   - {file: GetDemo.bfevfl}
+  - {file: Common.bfevfl}
+  - {file: ShrineRush.bfevfl}
   vanish_motorcycle: true
 Demo604_0<Demo604_0_C01>:
   as:
