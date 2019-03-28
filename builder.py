@@ -51,6 +51,8 @@ class Builder(metaclass=abc.ABCMeta):
             for data_type_key, flags in bgdata.items():
                 data_type = data_type_key[:-5]
                 self.gamedata_flags[data_type] += flags
+        if not self.gamedata_flags:
+            raise Exception(f'No bgdata was found in {self.gamedata_dir}')
 
     def _copy_assets(self) -> None:
         print('copying assets')
