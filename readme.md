@@ -21,6 +21,16 @@ You are given 13 hearts and full stamina, again for consistency. Just like the T
 
 When you finish the run, you will be sent back to the title screen. Your save is totally untouched.
 
+### Shrines
+[Complete shrine order](https://docs.google.com/spreadsheets/d/e/2PACX-1vSWYLALnkkN9baExEBicOf-Ll7o5MryMj3HOq2POiSMsXdLoXT5_gpRcSc9HTczbdi1ZPT0sr0oJz71/pubhtml?gid=393805711&single=true)
+
+| Category | Count |
+| --- | --- |
+| All Shrines | 136 |
+| No Blessings | 107 |
+| No Tests of Strength | 116 |
+| No Blessings and No Tests | 87 |
+
 ### Timed runs
 For timed runs, it is recommended to enter Shrine Rush on a new save, as flags for things like item get and tutorial text windows could still make a difference as far as timing is concerned.
 
